@@ -11,8 +11,6 @@ public class PublicCapsule {
   private String picture;
   private String record;
   private java.sql.Timestamp createdAt;
-  private long informTime;
-  private long likeNumber;
 
 
   public long getId() {
@@ -87,21 +85,5 @@ public class PublicCapsule {
   }
 
 
-  public long getInformTime() {
-    return informTime;
-  }
-
-  public void setInformTime(long informTime) {
-    this.informTime = informTime;
-  }
-
-
-  public long getLikeNumber() {
-    return likeNumber;
-  }
-
-  public void setLikeNumber(long likeNumber) {
-    this.likeNumber = likeNumber;
-  }
 
 }
