@@ -1,0 +1,64 @@
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.twt.travelDark.entity
+pagehelper:
+  helperDialect: mysql
+  supportMethodsArguments: true
+sa-token:
+  activity-timeout: 604800
+  jwt-secret-key: GuohEzuIsWorkingaNdIloVeTwT
+  token-name: token
+  is-read-cookie: false
+server:
+  #  port: 1000
+  port: 8081
+spring:
+  datasource:
+    druid:
+      driver-class-name: org.mariadb.jdbc.Driver
+      initial-size: 20
+      max-active: 40
+      max-wait: 60000
+      min-evictable-idle-time-millis: 300000
+      min-idle: 1
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      time-between-eviction-runs-millis: 60000
+      url: jdbc:mariadb://59.67.37.34:8888/travel_dark
+      #101.43.148.116:3306
+      username: travel_dark
+      password: Lh7imJ7YFTHdqaoJ
+      validation-query: SELECT 1 FROM DUAL
+    name: druid_datasource
+    type: com.alibaba.druid.pool.DruidDataSource
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  #  data:
+  #    mongodb:
+  #      host: 101.42.225.75
+  #      database: wby
+  #      port: 27017
+  web:
+    resources:
+      static-locations: classpath:/META-INF/resources/, classpath:/META-INF/resources/webjars/, classpath:/static/,classpath:/templates/
+
+#日志
+logging:
+  file:
+    name: logs/mylog.log
+  level:
+    root: warn
+    com:
+      twt:
+        travelDuck: info
+    org:
+      springframework: error
+
+
+
+

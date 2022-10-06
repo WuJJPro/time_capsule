@@ -1,0 +1,5 @@
+spring:
+  profiles:
+#    active: pro
+#     active: dev
+     active: local
