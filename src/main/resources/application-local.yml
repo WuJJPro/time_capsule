@@ -33,7 +33,7 @@ spring:
       url: jdbc:mysql://60.205.230.208:3306/time_capsule
         #101.43.148.116:3306
       username: root
-      password: password
+      password: 123456
       validation-query: SELECT 1 FROM DUAL
     name: druid_datasource
     type: com.alibaba.druid.pool.DruidDataSource
