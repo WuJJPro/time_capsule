@@ -7,7 +7,7 @@ public class User {
   private String uid;
   private String userName;
   private String avatar;
-  private String manage;
+  private int manage;
   private java.sql.Timestamp createdAt;
   private String email;
   private String password;
@@ -50,11 +50,11 @@ public class User {
   }
 
 
-  public String getManage() {
+  public int getManage() {
     return manage;
   }
 
-  public void setManage(String manage) {
+  public void setManage(int manage) {
     this.manage = manage;
   }
 

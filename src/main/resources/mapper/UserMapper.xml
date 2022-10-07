@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.twt.time_capsule.mapper.UserMapper">
-    <select id="getUserByUid">
+    <select id="getUserByUid" resultType="com.twt.time_capsule.entity.User">
         select * from user where uid = #{uid}
     </select>
 </mapper>
