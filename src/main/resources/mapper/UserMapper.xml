@@ -6,4 +6,10 @@
     <select id="getUserByUid" resultType="com.twt.time_capsule.entity.User">
         select * from user where uid = #{uid}
     </select>
+    <select id="getUserByEmail" resultType="com.twt.time_capsule.entity.User">
+        select * from user where email = #{email}
+    </select>
+    <select id="checkPassword" resultType="com.twt.time_capsule.entity.User">
+        select * from user where email = #{param1} and password = #{param2}
+    </select>
 </mapper>

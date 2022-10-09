@@ -1,5 +1,6 @@
-package com.twt.time_capsule.interceptor;
+package com.twt.time_capsule.config;
 
+import com.twt.time_capsule.interceptor.CorsInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

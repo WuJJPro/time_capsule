@@ -19,6 +19,7 @@ import java.util.Map;
 public class StpInterfaceImpl implements StpInterface {
     @Autowired
     UserMapper userMapper;
+
     /**
      * 返回一个账号所拥有的权限码集合
      */
@@ -36,35 +37,13 @@ public class StpInterfaceImpl implements StpInterface {
     public List<String> getRoleList(Object loginId, String loginType) {
 
         List<String> list = new ArrayList<String>();
-        JSONObject map = JSON.parseObject((String) loginId);
-        if(map.get("type").equals("token")){
-            //        当通过token登陆时
-            User user = userMapper.getUserByUid((String)map.get("uid"));
-            if (user != null) {
-//                已经登陆过
-                if(user.getManage()==1){
-                    list.add("admin");
-                }
-                else{
-                    list.add("user");
-                }
-                return list;
-            }
-            else{
-//                第一次登陆
-                User newUser = new User();
-                user.setAvatar((String) map.get("avatar"));
-                user.setUid((String) map.get("uid"));
-                user.setUserName((String) map.get("userName"));
-                list.add("user");
-                return list;
-            }
-
+        String uid = (String) loginId;
+        User user = userMapper.getUserByUid(uid);
+        if (user.getManage() == 1) {
+            list.add("admin");
+        } else {
+            list.add("user");
         }
-        else{
-            // TODO: 2022/10/7 通过密码登录
-            return list;
-        }
+        return list;
     }
-
 }
