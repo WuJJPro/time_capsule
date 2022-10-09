@@ -8,7 +8,7 @@ import java.util.Date;
 public class PublicCapsule {
 
   private String id;
-  private long uid;
+  private String uid;
   private long poolId;
   private String title;
   private String content;

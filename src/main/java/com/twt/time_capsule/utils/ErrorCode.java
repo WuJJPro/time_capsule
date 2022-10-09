@@ -21,7 +21,8 @@ public enum ErrorCode {
     PASSWORD_INCONSISTENT(10004,"两次密码不一致"),
     CODE_ERROR(10005,"验证码错误"),
     USER_NULL(10006,"该邮箱未绑定任何账号"),
-    EMAIL_OR_PASSWORD_ERROR(10007,"邮箱或密码错误");
+    EMAIL_OR_PASSWORD_ERROR(10007,"邮箱或密码错误"),
+    UNLOGIN(10008,"未登录");
     private final int code;
     private final String message;
 

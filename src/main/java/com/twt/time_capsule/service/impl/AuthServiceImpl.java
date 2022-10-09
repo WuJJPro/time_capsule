@@ -144,7 +144,7 @@ public class AuthServiceImpl implements AuthService {
         }
         // 获取加密盐
         String salt = user.getSalt();
-        user = userMapper.checkPassword(email,password + salt);
+        user = userMapper.checkPassword(email,DigestUtils.md5Hex(password + salt));
 
         if(user==null){
             return APIResponse.error(ErrorCode.EMAIL_OR_PASSWORD_ERROR);
@@ -157,6 +157,44 @@ public class AuthServiceImpl implements AuthService {
         map.put("token",token);
         map.put("role",roleList);
         return APIResponse.success(map);
+    }
+
+    @Override
+    public APIResponse findPassword(String email, String password, String passwordConfirm, String code) {
+        if (StringUtils.isAnyBlank(email, password, passwordConfirm, code)) {
+            // 非空
+            return APIResponse.error(ErrorCode.PARAM_ERROR);
+        }else if (!StringUtil.checkEmail(email)) {
+            // 邮箱格式校验
+            return APIResponse.error(ErrorCode.EMAIL_ERROR);
+        }else if (!password.equals(passwordConfirm)) {
+            // 密码一致校验
+            return APIResponse.error(ErrorCode.PASSWORD_INCONSISTENT);
+        }else if (!StringUtil.checkPassword(password) || code.length() != 6) {
+            // 密码格式和验证码长度校验
+            return APIResponse.error(ErrorCode.PARAM_ERROR);
+        }
+
+        // 获取数据库中最新的一张验证码
+        EmailCode emailCode = emailCodeMapper.getCode(email);
+        // 验证是否过期，是否正确
+        if(emailCode==null){
+            return APIResponse.error(ErrorCode.CODE_ERROR);
+        }
+        if(!emailCode.getCode().equals(code)){
+            return APIResponse.error(ErrorCode.CODE_ERROR);
+        }
+        // 注册用户
+        User user = userMapper.getUserByEmail(email);
+        // 获取加密盐
+        String salt = StringUtil.randomEncryptedSalt();
+        // 密码加密（原明文密码 + 随机加密盐） md5加密
+        user.setPassword(DigestUtils.md5Hex(password + salt));
+        // 加密盐
+        user.setSalt(salt);
+        userMapper.updateById(user);
+        // 插入数据
+        return APIResponse.success();
     }
 
     /**

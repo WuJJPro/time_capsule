@@ -1,6 +1,7 @@
 package com.twt.time_capsule.entity;
 
 
+import com.alibaba.fastjson.JSONArray;
 import lombok.Data;
 
 import java.util.Date;
@@ -8,14 +9,14 @@ import java.util.Date;
 public class PrivateCapsuleFinished {
 
   private String id;
-  private long uid;
+  private String uid;
   private String title;
   private String content;
   private Date openTime;
   private Date createdAt;
-  private String record;
+  private JSONArray record;
   private long success;
-  private String picture;
+  private JSONArray picture;
 
 
 

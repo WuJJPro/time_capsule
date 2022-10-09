@@ -63,4 +63,17 @@ public class AuthController {
     public APIResponse LoginByEmail(String email,String password){
         return authService.loginByEmail(email,password);
     }
+
+    /**
+     * 修改密码
+     * @param email
+     * @param password
+     * @param passwordConfirm
+     * @param code
+     * @return
+     */
+    @PostMapping("findpassword")
+    public APIResponse findPassword(String email,String password,String passwordConfirm,String code){
+        return authService.findPassword(email,password,passwordConfirm,code);
+    }
 }

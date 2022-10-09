@@ -7,4 +7,5 @@ public interface AuthService {
     APIResponse sendCode(String email);
     APIResponse register(String email,String password,String passwordConfirm,String code);
     APIResponse loginByEmail(String email,String password);
+    APIResponse findPassword(String email,String password,String passwordConfirm,String code);
 }
