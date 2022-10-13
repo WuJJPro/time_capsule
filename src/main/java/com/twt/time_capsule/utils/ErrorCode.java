@@ -22,6 +22,15 @@ public enum ErrorCode {
     CODE_ERROR(10005,"验证码错误"),
     USER_NULL(10006,"该邮箱未绑定任何账号"),
     EMAIL_OR_PASSWORD_ERROR(10007,"邮箱或密码错误"),
+
+    PRIVATE_CAPSULE_UNEXIST(20001,"key错误,该胶囊不存在"),
+    OTHER_USER_CAPSULE(20002,"你没有权限打开别人的胶囊"),
+    TIME_NOT_ARRIVED(20003,"时间未到，无法打开该胶囊"),
+    CAPSULE_OPENED(20004,"该胶囊已经打开过了"),
+
+    POOL_UN_EXIST(30001,"该胶囊池不存在"),
+    POOL_STATE_ALREADY(30002,"该胶囊池已经处于该状态"),
+
     UNLOGIN(10008,"未登录");
     private final int code;
     private final String message;

@@ -11,4 +11,5 @@ public interface PrivateCapsuleMapper extends BaseMapper<PrivateCapsule> {
     List<PrivateCapsule> getOpenedCapsules(String uid);
     List<PrivateCapsule> getClosedCapsules(String uid);
     List<PrivateCapsule> getAllCapsules(String uid);
+    List<PrivateCapsule> getReadyCapsules(String uid);
 }

@@ -28,11 +28,31 @@ public class PrivateCapsuleController {
 
     /**
      * 获取个人所有胶囊列表
-     * @param type “open” "close" "all"
+     * @param type “open” "close" "all" "ready"
      * @return
      */
     @GetMapping("/list")
     public APIResponse getPrivateCapsule(String type){
         return privateCapsuleService.getPrivateCapsule(type);
+    }
+
+    /**
+     * 拆开一个私有胶囊
+     * @param key
+     * @return
+     */
+    @GetMapping("/open")
+    public APIResponse openPrivateCapsule(String key){
+        return privateCapsuleService.openPrivateCapsule(key);
+    }
+
+    /**
+     * 获取一个已经拆开过的胶囊的内容
+     * @param key
+     * @return
+     */
+    @GetMapping("/content")
+    public APIResponse getPrivateCapsuleContent(String key){
+        return privateCapsuleService.getPrivateCapsuleContent(key);
     }
 }
