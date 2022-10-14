@@ -1,30 +1,105 @@
 package com.twt.time_capsule.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
+import com.twt.time_capsule.entity.CapsulePool;
 import com.twt.time_capsule.entity.PrivateCapsule;
 import com.twt.time_capsule.entity.PublicCapsule;
+import com.twt.time_capsule.entity.PublicCapsuleDeleted;
+import com.twt.time_capsule.mapper.CapsulePoolMapper;
+import com.twt.time_capsule.mapper.LoveMapper;
+import com.twt.time_capsule.mapper.PublicCapsuleDeletedMapper;
+import com.twt.time_capsule.mapper.PublicCapsuleMapper;
+import com.twt.time_capsule.service.CapsulePoolService;
 import com.twt.time_capsule.service.PublicCapsuleService;
 import com.twt.time_capsule.utils.APIResponse;
+import com.twt.time_capsule.utils.ErrorCode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 public class PublicCapsuleServiceImpl implements PublicCapsuleService {
+    private static final int ACTION_LOVE = 1;
+    private static final int ACTION_LOVE_CANCEL = 0;
+    @Autowired
+    PublicCapsuleMapper capsuleMapper;
+    @Autowired
+    CapsulePoolMapper poolMapper;
+    @Autowired
+    PublicCapsuleDeletedMapper capsuleDeletedMapper;
+    @Autowired
+    LoveMapper loveMapper;
     @Override
     public APIResponse addPublicCapsule(PublicCapsule capsule) {
-        return null;
+        //判断poolid是否合法
+        String poolId = capsule.getPoolId();
+        CapsulePool pool = poolMapper.selectById(poolId);
+        if(pool==null){
+            return APIResponse.error(ErrorCode.POOL_UN_EXIST);
+        }
+        //判断是否超过200字
+        if(capsule.getContent().length()>200){
+            return APIResponse.error(ErrorCode.WORDS_MAX);
+        }
+
+        capsule.setLikeNumber(0);
+        String uid = StpUtil.getLoginIdAsString();
+        capsule.setUid(uid);
+        capsuleMapper.insert(capsule);
+        return APIResponse.success();
     }
 
     @Override
     public APIResponse alterPublicCapsule(PublicCapsule capsule) {
-        return null;
+        PublicCapsule ori_capsule = capsuleMapper.selectById(capsule.getId());
+        boolean flag = false;
+        if(capsule.getContent()!=null){
+            if(capsule.getContent().length()>200){
+                return APIResponse.error(ErrorCode.WORDS_MAX);
+            }
+            ori_capsule.setContent(capsule.getContent());
+            flag = true;
+        }
+        if(capsule.getMood()!=null){
+            ori_capsule.setMood(capsule.getMood());
+            flag = true;
+        }
+        if(flag){
+            Date now = new Date();
+            ori_capsule.setCreatedAt(now);
+            capsuleMapper.updateById(ori_capsule);
+            return APIResponse.success();
+        }
+        return APIResponse.error(ErrorCode.PARAM_ERROR);
     }
 
     @Override
     public APIResponse deletePublicCapsule(String key) {
-        return null;
+        String uid = StpUtil.getLoginIdAsString();
+        PublicCapsule capsule = capsuleMapper.selectById(key);
+        if(!capsule.getUid().equals(uid)){
+            return APIResponse.error(ErrorCode.OTHER_USER_CAPSULE);
+        }
+        capsuleMapper.deleteById(key);
+        PublicCapsuleDeleted capsuleDeleted = new PublicCapsuleDeleted(capsule);
+        capsuleDeleted.setAdminUid("self");
+        capsuleDeleted.setReason("self");
+        capsuleDeletedMapper.insert(capsuleDeleted);
+        return APIResponse.success();
     }
 
     @Override
     public APIResponse lovePublicCapsule(String key,int action) {
+        if(action==ACTION_LOVE){
+
+        }
+        else if(action==ACTION_LOVE_CANCEL){
+
+        }
+        else{
+            return APIResponse.error(ErrorCode.PARAM_ERROR);
+        }
         return null;
     }
 
@@ -35,6 +110,10 @@ public class PublicCapsuleServiceImpl implements PublicCapsuleService {
 
     @Override
     public APIResponse getPublicCapsule(String key) {
-        return null;
+        PublicCapsule capsule = capsuleMapper.selectById(key);
+        if(capsule==null){
+            return APIResponse.error(ErrorCode.PRIVATE_CAPSULE_UNEXIST);
+        }
+        return APIResponse.success(capsule);
     }
 }

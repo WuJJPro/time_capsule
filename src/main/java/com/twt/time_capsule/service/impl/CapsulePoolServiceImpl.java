@@ -35,7 +35,7 @@ public class CapsulePoolServiceImpl implements CapsulePoolService {
             return APIResponse.error(ErrorCode.POOL_STATE_ALREADY);
         }
         capsulePool.setState(POOL_STATE_OPEN);
-        capsulePoolMapper.update(capsulePool,null);
+        capsulePoolMapper.updateById(capsulePool);
         return APIResponse.success();
     }
 
@@ -50,7 +50,7 @@ public class CapsulePoolServiceImpl implements CapsulePoolService {
             return APIResponse.error(ErrorCode.POOL_STATE_ALREADY);
         }
         capsulePool.setState(POOL_STATE_CLOSE);
-        capsulePoolMapper.update(capsulePool,null);
+        capsulePoolMapper.updateById(capsulePool);
         return APIResponse.success();
     }
 

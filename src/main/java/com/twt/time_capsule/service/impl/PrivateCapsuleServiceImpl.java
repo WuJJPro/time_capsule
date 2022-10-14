@@ -86,7 +86,7 @@ public class PrivateCapsuleServiceImpl implements PrivateCapsuleService {
             return APIResponse.error(ErrorCode.CAPSULE_OPENED);
         }
         capsule.setSuccess(STATE_OPENED);
-        capsuleMapper.update(capsule,null);
+        capsuleMapper.updateById(capsule);
         return getPrivateCapsuleContent(key);
     }
 
