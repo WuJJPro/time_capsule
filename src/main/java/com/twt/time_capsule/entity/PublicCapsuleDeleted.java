@@ -1,13 +1,14 @@
 package com.twt.time_capsule.entity;
 
-
 import lombok.Data;
 
 import java.util.Date;
+
 @Data
-public class PublicCapsule {
+public class PublicCapsuleDeleted {
 
   private String id;
+  private String oriId;
   private String uid;
   private String poolId;
   private String title;
@@ -15,6 +16,9 @@ public class PublicCapsule {
   private Date createdAt;
   private long mood;
   private long likeNumber;
+  private Date deletedAt;
+  private String adminUid;
+  private String reason;
 
 
 

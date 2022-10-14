@@ -10,6 +10,7 @@ public class Report {
   private String id;
   private String key;
   private String uid;
+  private String reason;
   private Date createdAt;
 
 
