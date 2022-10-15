@@ -15,7 +15,12 @@ public class PublicCapsule {
   private Integer mood;
   private Integer likeNumber;
 
-
+  public void loveAdd(){
+    this.likeNumber+=1;
+  }
+  public void loveCancel(){
+    this.likeNumber-=1;
+  }
 
 
 }

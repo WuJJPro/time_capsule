@@ -12,11 +12,6 @@ import java.util.List;
 @Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
 
-    /**
-     * 使用阿里 fastjson 作为 JSON MessageConverter
-     *
-     * @param converters
-     */
     private static final List<String> EXCLUDE_PATH = Arrays.asList("/", "css/**", "js/**", "img/**", "json/**", "fonts/**","/*.html");
 
     @Bean

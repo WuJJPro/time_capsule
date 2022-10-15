@@ -60,7 +60,7 @@ public class PublicCapsuleController {
     /**
      * 点赞，取消点赞
      * @param key
-     * @param action
+     * @param action  1为点赞，0为取消点赞
      * @return
      */
     @GetMapping("like")

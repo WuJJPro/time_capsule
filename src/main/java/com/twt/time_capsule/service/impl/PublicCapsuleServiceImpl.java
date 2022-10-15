@@ -1,10 +1,7 @@
 package com.twt.time_capsule.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
-import com.twt.time_capsule.entity.CapsulePool;
-import com.twt.time_capsule.entity.PrivateCapsule;
-import com.twt.time_capsule.entity.PublicCapsule;
-import com.twt.time_capsule.entity.PublicCapsuleDeleted;
+import com.twt.time_capsule.entity.*;
 import com.twt.time_capsule.mapper.CapsulePoolMapper;
 import com.twt.time_capsule.mapper.LoveMapper;
 import com.twt.time_capsule.mapper.PublicCapsuleDeletedMapper;
@@ -91,16 +88,39 @@ public class PublicCapsuleServiceImpl implements PublicCapsuleService {
 
     @Override
     public APIResponse lovePublicCapsule(String key,int action) {
+        String uid = StpUtil.getLoginIdAsString();
         if(action==ACTION_LOVE){
-
+            Love love = loveMapper.getLove(uid,key);
+            if(love!=null){
+                return APIResponse.error(ErrorCode.LOVE_EXIST);
+            }
+            //添加love记录
+            Love newLove = new Love();
+            newLove.setUid(uid);
+            newLove.setKey(key);
+            loveMapper.insert(newLove);
+            //点赞总数+1
+            PublicCapsule capsule = capsuleMapper.selectById(key);
+            capsule.loveAdd();
+            capsuleMapper.updateById(capsule);
+            return APIResponse.success();
         }
         else if(action==ACTION_LOVE_CANCEL){
-
+            Love love = loveMapper.getLove(uid,key);
+            if(love==null){
+                return APIResponse.error(ErrorCode.LOVE_EXIST);
+            }
+            //删除love记录
+            loveMapper.deleteById(love.getId());
+            //点赞总数-1
+            PublicCapsule capsule = capsuleMapper.selectById(key);
+            capsule.loveCancel();
+            capsuleMapper.updateById(capsule);
+            return APIResponse.success();
         }
         else{
             return APIResponse.error(ErrorCode.PARAM_ERROR);
         }
-        return null;
     }
 
     @Override

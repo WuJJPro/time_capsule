@@ -33,6 +33,7 @@ public enum ErrorCode {
 
     WORDS_MAX(40001,"字数超过200上限"),
 
+    LOVE_EXIST(40002,"已经进行过此操作"),
 
     UNLOGIN(10008,"未登录");
     private final int code;

@@ -11,5 +11,4 @@ public class TimeCapsuleApplication {
     public static void main(String[] args) {
         SpringApplication.run(TimeCapsuleApplication.class, args);
     }
-
 }
