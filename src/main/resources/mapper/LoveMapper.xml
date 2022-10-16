@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.twt.time_capsule.mapper.LoveMapper">
     <select id="getLove" resultType="com.twt.time_capsule.entity.Love">
-        select * from Love where uid = #{uid} and key = #{key}
+        select * from love where uid = #{uid} and capsule_key = #{key}
     </select>
 
 </mapper>

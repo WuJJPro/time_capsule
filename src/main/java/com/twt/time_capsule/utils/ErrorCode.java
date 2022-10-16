@@ -32,9 +32,11 @@ public enum ErrorCode {
     POOL_STATE_ALREADY(30002,"该胶囊池已经处于该状态"),
 
     WORDS_MAX(40001,"字数超过200上限"),
+    WORDS_50_MAX(40003,"字数超过50上限"),
 
     LOVE_EXIST(40002,"已经进行过此操作"),
-
+    REPORT_EXIST(40004,"已经举报过"),
+    CAPSULE_EXIST(40005,"本次活动已经参加过了"),
     UNLOGIN(10008,"未登录");
     private final int code;
     private final String message;

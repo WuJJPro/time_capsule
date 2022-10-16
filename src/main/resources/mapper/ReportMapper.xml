@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.twt.time_capsule.mapper.ReportMapper">
+    <select id="getReport" resultType="com.twt.time_capsule.entity.Report">
+        select * from report where uid = #{uid} and capsule_key = #{key}
+    </select>
+
+</mapper>

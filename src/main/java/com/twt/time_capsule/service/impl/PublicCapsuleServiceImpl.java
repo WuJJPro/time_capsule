@@ -2,10 +2,7 @@ package com.twt.time_capsule.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.twt.time_capsule.entity.*;
-import com.twt.time_capsule.mapper.CapsulePoolMapper;
-import com.twt.time_capsule.mapper.LoveMapper;
-import com.twt.time_capsule.mapper.PublicCapsuleDeletedMapper;
-import com.twt.time_capsule.mapper.PublicCapsuleMapper;
+import com.twt.time_capsule.mapper.*;
 import com.twt.time_capsule.service.CapsulePoolService;
 import com.twt.time_capsule.service.PublicCapsuleService;
 import com.twt.time_capsule.utils.APIResponse;
@@ -27,13 +24,21 @@ public class PublicCapsuleServiceImpl implements PublicCapsuleService {
     PublicCapsuleDeletedMapper capsuleDeletedMapper;
     @Autowired
     LoveMapper loveMapper;
+    @Autowired
+    ReportMapper reportMapper;
     @Override
     public APIResponse addPublicCapsule(PublicCapsule capsule) {
         //判断poolid是否合法
+        String uid = StpUtil.getLoginIdAsString();
         String poolId = capsule.getPoolId();
         CapsulePool pool = poolMapper.selectById(poolId);
         if(pool==null){
             return APIResponse.error(ErrorCode.POOL_UN_EXIST);
+        }
+        //判断这次活动是否已经发表过
+        PublicCapsule oriCapsule = capsuleMapper.getCapsule(uid,poolId);
+        if(oriCapsule!=null){
+            return APIResponse.error(ErrorCode.CAPSULE_EXIST);
         }
         //判断是否超过200字
         if(capsule.getContent().length()>200){
@@ -41,7 +46,6 @@ public class PublicCapsuleServiceImpl implements PublicCapsuleService {
         }
 
         capsule.setLikeNumber(0);
-        String uid = StpUtil.getLoginIdAsString();
         capsule.setUid(uid);
         capsuleMapper.insert(capsule);
         return APIResponse.success();
@@ -88,6 +92,10 @@ public class PublicCapsuleServiceImpl implements PublicCapsuleService {
 
     @Override
     public APIResponse lovePublicCapsule(String key,int action) {
+        PublicCapsule capsule = capsuleMapper.selectById(key);
+        if(capsule==null){
+            return APIResponse.error(ErrorCode.PRIVATE_CAPSULE_UNEXIST);
+        }
         String uid = StpUtil.getLoginIdAsString();
         if(action==ACTION_LOVE){
             Love love = loveMapper.getLove(uid,key);
@@ -97,10 +105,9 @@ public class PublicCapsuleServiceImpl implements PublicCapsuleService {
             //添加love记录
             Love newLove = new Love();
             newLove.setUid(uid);
-            newLove.setKey(key);
+            newLove.setCapsuleKey(key);
             loveMapper.insert(newLove);
             //点赞总数+1
-            PublicCapsule capsule = capsuleMapper.selectById(key);
             capsule.loveAdd();
             capsuleMapper.updateById(capsule);
             return APIResponse.success();
@@ -113,7 +120,6 @@ public class PublicCapsuleServiceImpl implements PublicCapsuleService {
             //删除love记录
             loveMapper.deleteById(love.getId());
             //点赞总数-1
-            PublicCapsule capsule = capsuleMapper.selectById(key);
             capsule.loveCancel();
             capsuleMapper.updateById(capsule);
             return APIResponse.success();
@@ -125,7 +131,24 @@ public class PublicCapsuleServiceImpl implements PublicCapsuleService {
 
     @Override
     public APIResponse reportPublicCapsule(String key,String reason) {
-        return null;
+        String uid = StpUtil.getLoginIdAsString();
+        PublicCapsule capsule = capsuleMapper.selectById(key);
+        if(capsule==null){
+            return APIResponse.error(ErrorCode.PRIVATE_CAPSULE_UNEXIST);
+        }
+        if(reason.length()>50){
+            return APIResponse.error(ErrorCode.WORDS_50_MAX);
+        }
+        Report oriReport = reportMapper.getReport(uid,key);
+        if (oriReport != null) {
+            return APIResponse.error(ErrorCode.REPORT_EXIST);
+        }
+        Report report = new Report();
+        report.setUid(uid);
+        report.setCapsuleKey(key);
+        report.setReason(reason);
+        reportMapper.insert(report);
+        return APIResponse.success();
     }
 
     @Override
@@ -135,5 +158,10 @@ public class PublicCapsuleServiceImpl implements PublicCapsuleService {
             return APIResponse.error(ErrorCode.PRIVATE_CAPSULE_UNEXIST);
         }
         return APIResponse.success(capsule);
+    }
+
+    @Override
+    public APIResponse getList(String poolId) {
+        return null;
     }
 }

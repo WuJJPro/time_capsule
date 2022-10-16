@@ -8,7 +8,7 @@ import java.util.Date;
 public class Report {
 
   private String id;
-  private String key;
+  private String CapsuleKey;
   private String uid;
   private String reason;
   private Date createdAt;

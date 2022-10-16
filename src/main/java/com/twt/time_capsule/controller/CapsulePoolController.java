@@ -63,6 +63,7 @@ public class CapsulePoolController {
      * 获取所有的
      * @return
      */
+    // TODO: 2022/10/16 返回是否参加过这个胶囊 
     @GetMapping("list")
     public APIResponse getList(String type){
         return capsulePoolService.getList(type);

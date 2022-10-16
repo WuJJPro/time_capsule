@@ -8,7 +8,7 @@ import java.util.Date;
 public class Love {
 
   private String id;
-  private String key;
+  private String capsuleKey;
   private String uid;
   private Date createdAt;
 
