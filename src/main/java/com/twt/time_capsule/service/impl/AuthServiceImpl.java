@@ -80,7 +80,12 @@ public class AuthServiceImpl implements AuthService {
                          "此验证码5分钟内有效，请立即进行下一步操作。 如非你本人操作，请忽略此邮件。\n" +
                          "感谢您的使用！";
         // 发送验证码
-        threadUtil.sendSimpleMail(email, "您此次的验证码为：" + code, content);
+        try {
+            threadUtil.sendSimpleMail(email, "您此次的验证码为：" + code, content);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return APIResponse.error(ErrorCode.CODE_SEND_ERROR);
+        }
         // 丢入mysql，设置5分钟过期
         EmailCode emailCode = new EmailCode();
         emailCode.setCode(code);

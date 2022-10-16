@@ -17,7 +17,7 @@ public class ThreadUtil {
      * @param content 内容
      */
     @Async("taskExecutor")
-    public void sendSimpleMail(String to, String theme, String content) {
+    public void sendSimpleMail(String to, String theme, String content)throws Exception{
         mailUtil.sendSimpleMail(to, theme, content);
     }
 }

@@ -33,15 +33,13 @@ public class MailUtil {
      * @param content 正文内容
      * @param cc 抄送
      */
-    public void sendSimpleMail(String to, String theme, String content, String... cc) {
+    public void sendSimpleMail(String to, String theme, String content, String... cc)throws Exception{
         // 创建邮件对象
         SimpleMailMessage message = new SimpleMailMessage();
 
-        try {
-            message.setFrom(String.valueOf(new InternetAddress(from, "零下几度", "UTF-8")));      // 发件人
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+
+        message.setFrom(String.valueOf(new InternetAddress(from, "零下几度", "UTF-8")));      // 发件人
+
         message.setTo(to);          // 收件人
         message.setSubject(theme);  // 标题
         message.setText(content);   // 内容

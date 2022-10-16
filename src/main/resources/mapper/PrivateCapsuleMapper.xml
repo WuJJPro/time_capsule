@@ -15,4 +15,7 @@
     <select id="getAllCapsules" resultType="com.twt.time_capsule.entity.PrivateCapsule">
         select * from private_capsule where uid = #{uid}
     </select>
+    <select id="timeTask" resultType="com.twt.time_capsule.entity.PrivateCapsule">
+        select * from private_capsule where success = 0 and open_time = DATE(NOW())
+    </select>
 </mapper>
