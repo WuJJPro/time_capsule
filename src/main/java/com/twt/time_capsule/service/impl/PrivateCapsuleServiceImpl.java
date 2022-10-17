@@ -3,6 +3,7 @@ package com.twt.time_capsule.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.twt.time_capsule.entity.PrivateCapsule;
 import com.twt.time_capsule.mapper.PrivateCapsuleMapper;
 import com.twt.time_capsule.service.PrivateCapsuleService;
@@ -11,6 +12,7 @@ import com.twt.time_capsule.utils.ErrorCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.geom.QuadCurve2D;
 import java.util.List;
 
 @Service
@@ -93,6 +95,9 @@ public class PrivateCapsuleServiceImpl implements PrivateCapsuleService {
     @Override
     public APIResponse getPrivateCapsuleContent(String key) {
         PrivateCapsule capsule = capsuleMapper.selectById(key);
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("id",key);
+        capsuleMapper.selectList(queryWrapper);
         if(capsule.getSuccess()==STATE_OPENED){
             JSONObject jsonObject = (JSONObject) JSONObject.toJSON(capsule);
             jsonObject.remove("uid");

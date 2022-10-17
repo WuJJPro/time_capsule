@@ -3,6 +3,7 @@ package com.twt.time_capsule.controller;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import com.alibaba.fastjson.JSONObject;
 import com.twt.time_capsule.service.AuthService;
+import com.twt.time_capsule.service.NoticeService;
 import com.twt.time_capsule.utils.APIResponse;
 import com.twt.time_capsule.utils.HttpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import retrofit2.http.GET;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/auth")
@@ -18,6 +22,8 @@ public class AuthController {
     @Autowired
     AuthService authService;
 
+    @Autowired
+    NoticeService noticeService;
     /**
      * 通过微北洋的jwt登录
      * @param token
@@ -75,5 +81,10 @@ public class AuthController {
     @PostMapping("findpassword")
     public APIResponse findPassword(String email,String password,String passwordConfirm,String code){
         return authService.findPassword(email,password,passwordConfirm,code);
+    }
+
+    @GetMapping("read")
+    public APIResponse readNotice(List<String> ids){
+        return noticeService.readNotice(ids);
     }
 }

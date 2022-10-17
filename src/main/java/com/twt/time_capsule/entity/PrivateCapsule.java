@@ -10,7 +10,6 @@ import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
-
 @Data
 public class PrivateCapsule {
 
@@ -26,4 +25,6 @@ public class PrivateCapsule {
   @TableField(typeHandler = JacksonTypeHandler.class)
   private JSONArray picture;
   private long success;
+
+
 }
