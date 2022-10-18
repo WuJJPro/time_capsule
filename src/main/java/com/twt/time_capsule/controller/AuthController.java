@@ -83,8 +83,15 @@ public class AuthController {
         return authService.findPassword(email,password,passwordConfirm,code);
     }
 
-    @GetMapping("read")
-    public APIResponse readNotice(List<String> ids){
-        return noticeService.readNotice(ids);
+    @SaCheckLogin
+    @PostMapping("/notice/read")
+    public APIResponse readNotice(String id){
+        return noticeService.readNotice(id);
+    }
+
+    @SaCheckLogin
+    @GetMapping("/notice/get")
+    public APIResponse getNotice(){
+        return noticeService.getNotice();
     }
 }

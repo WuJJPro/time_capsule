@@ -5,5 +5,6 @@ import com.twt.time_capsule.utils.APIResponse;
 import java.util.List;
 
 public interface NoticeService {
-    APIResponse readNotice(List<String> ids);
+    APIResponse readNotice(String id);
+    APIResponse getNotice();
 }

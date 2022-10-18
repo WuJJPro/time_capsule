@@ -23,6 +23,7 @@ public enum ErrorCode {
     USER_NULL(10006,"该邮箱未绑定任何账号"),
     EMAIL_OR_PASSWORD_ERROR(10007,"邮箱或密码错误"),
     CODE_SEND_ERROR(10008,"验证发送失败，请检查邮箱是否输入正确"),
+    NOTICE_ALREADY_READ(10009,"id错误或已经阅读过该通知了"),
 
     PRIVATE_CAPSULE_UNEXIST(20001,"key错误,该胶囊不存在"),
     OTHER_USER_CAPSULE(20002,"你没有权限操作别人的胶囊"),
