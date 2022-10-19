@@ -5,7 +5,10 @@ import com.twt.time_capsule.entity.PublicCapsule;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface PublicCapsuleMapper extends BaseMapper<PublicCapsule> {
     PublicCapsule getCapsule(@Param("uid") String uid,@Param("poolId") String poolId);
+    List<PublicCapsule> getCapsuleByPool(String poolId);
 }

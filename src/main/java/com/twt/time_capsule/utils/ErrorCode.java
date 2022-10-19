@@ -29,9 +29,11 @@ public enum ErrorCode {
     OTHER_USER_CAPSULE(20002,"你没有权限操作别人的胶囊"),
     TIME_NOT_ARRIVED(20003,"时间未到，无法打开该胶囊"),
     CAPSULE_OPENED(20004,"该胶囊已经打开过了"),
+    NOT_PARTICIPATING(20005,"你未参加过此次活动，无法查看"),
 
     POOL_UN_EXIST(30001,"该胶囊池不存在"),
     POOL_STATE_ALREADY(30002,"该胶囊池已经处于该状态"),
+    POOL_UNABLE_DELETE(30003,"该胶囊池内有胶囊，不能删除"),
 
     WORDS_MAX(40001,"字数超过200上限"),
     WORDS_50_MAX(40003,"字数超过50上限"),

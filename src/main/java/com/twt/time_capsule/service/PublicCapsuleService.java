@@ -13,5 +13,5 @@ public interface PublicCapsuleService {
     APIResponse lovePublicCapsule(String key,int action);
     APIResponse reportPublicCapsule(String key,String reason);
     APIResponse getPublicCapsule(String key);
-    APIResponse getList(String poolId);
+    APIResponse getList(String poolId,int pageNum,int PageSize,String order,String type);
 }

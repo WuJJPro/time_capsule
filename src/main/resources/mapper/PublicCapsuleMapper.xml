@@ -6,4 +6,7 @@
     <select id="getCapsule" resultType="com.twt.time_capsule.entity.PublicCapsule">
         select * from public_capsule where uid = #{uid} and pool_id = #{poolId}
     </select>
+    <select id="getCapsuleByPool" resultType="com.twt.time_capsule.entity.PublicCapsule">
+        select * from public_capsule where pool_id = #{poolId}
+    </select>
 </mapper>

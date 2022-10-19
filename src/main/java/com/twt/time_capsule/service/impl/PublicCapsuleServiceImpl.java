@@ -11,11 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class PublicCapsuleServiceImpl implements PublicCapsuleService {
     private static final int ACTION_LOVE = 1;
     private static final int ACTION_LOVE_CANCEL = 0;
+    private static final int POOL_STATE_OPEN = 1;
+    private static final int POOL_STATE_CLOSE = 0;
     @Autowired
     PublicCapsuleMapper capsuleMapper;
     @Autowired
@@ -160,8 +163,50 @@ public class PublicCapsuleServiceImpl implements PublicCapsuleService {
         return APIResponse.success(capsule);
     }
 
+    /**
+     * 对请求进行鉴权，分发
+     * @param poolId
+     * @param pageNum
+     * @param pageSize
+     * @param order
+     * @param type
+     * @return
+     */
     @Override
-    public APIResponse getList(String poolId) {
+    public APIResponse getList(String poolId,int pageNum,int pageSize,String order,String type) {
+        //超管可以看
+        if(StpUtil.hasRole("admin")){
+            return getListInner(poolId,pageNum,pageSize,order,type);
+        }
+        CapsulePool capsulePool = poolMapper.selectById(poolId);
+        //活动进行中可以看
+        if(capsulePool.getState()==POOL_STATE_OPEN){
+            return getListInner(poolId,pageNum,pageSize,order,type);
+        }
+        else{
+            //活动结束了，参与过的可以看
+            String uid = StpUtil.getLoginIdAsString();
+            PublicCapsule capsule = capsuleMapper.getCapsule(uid,poolId);
+            if(capsule!=null){
+                return getListInner(poolId,pageNum,pageSize,order,type);
+            }
+            //活动结束没有参加活动不能看
+            return APIResponse.error(ErrorCode.NOT_PARTICIPATING);
+        }
+
+    }
+
+    /**
+     * getList的内部方法
+     * @param poolId
+     * @param pageNum
+     * @param PageSize
+     * @param order
+     * @param type
+     * @return
+     */
+    private APIResponse getListInner(String poolId,int pageNum,int PageSize,String order,String type){
+        // TODO: 2022/10/19 处理查询参数 
         return null;
     }
 }

@@ -86,7 +86,7 @@ public class PublicCapsuleController {
      */
 //    TODO: 2022/10/16 按时间，按热度 升序降序，分页数  鉴权 参加过活动 活动结束 超管
     @GetMapping("list")
-    public APIResponse getList(String poolId){
-        return publicCapsuleService.getList(poolId);
+    public APIResponse getList(String poolId,int pageNum,int pageSize,String order,String type){
+        return publicCapsuleService.getList(poolId,pageNum,pageSize,order,type);
     }
 }

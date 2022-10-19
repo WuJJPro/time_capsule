@@ -2,7 +2,10 @@ package com.twt.time_capsule.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.twt.time_capsule.entity.CapsulePool;
+import com.twt.time_capsule.entity.PrivateCapsule;
+import com.twt.time_capsule.entity.PublicCapsule;
 import com.twt.time_capsule.mapper.CapsulePoolMapper;
+import com.twt.time_capsule.mapper.PublicCapsuleMapper;
 import com.twt.time_capsule.service.CapsulePoolService;
 import com.twt.time_capsule.utils.APIResponse;
 import com.twt.time_capsule.utils.ErrorCode;
@@ -17,6 +20,8 @@ public class CapsulePoolServiceImpl implements CapsulePoolService {
     private static final int POOL_STATE_CLOSE = 0;
     @Autowired
     CapsulePoolMapper capsulePoolMapper;
+    @Autowired
+    PublicCapsuleMapper capsuleMapper;
     @Override
     public APIResponse addPool(JSONObject jsonObject) {
         CapsulePool capsulePool = jsonObject.toJavaObject(jsonObject,CapsulePool.class);
@@ -60,7 +65,10 @@ public class CapsulePoolServiceImpl implements CapsulePoolService {
         if(capsulePool==null){
             return APIResponse.error(ErrorCode.POOL_UN_EXIST);
         }
-        // TODO: 2022/10/12  判断是否该池中有公共胶囊，如果有则不能删除
+        List<PublicCapsule> capsules = capsuleMapper.getCapsuleByPool(id);
+        if (capsules != null) {
+            return APIResponse.error(ErrorCode.POOL_UNABLE_DELETE);
+        }
         capsulePoolMapper.deleteById(id);
         return APIResponse.success();
     }
@@ -80,6 +88,7 @@ public class CapsulePoolServiceImpl implements CapsulePoolService {
         else{
             return APIResponse.error(ErrorCode.PARAM_ERROR);
         }
+
         return APIResponse.success(capsulePools);
     }
 
