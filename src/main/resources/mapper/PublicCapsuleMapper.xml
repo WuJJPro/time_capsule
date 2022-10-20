@@ -9,4 +9,16 @@
     <select id="getCapsuleByPool" resultType="com.twt.time_capsule.entity.PublicCapsule">
         select * from public_capsule where pool_id = #{poolId}
     </select>
+    <select id="getCapsuleByPoolByHotAsc" resultType="com.twt.time_capsule.entity.PublicCapsule">
+        select * from public_capsule where pool_id = #{poolId} order by like_number
+    </select>
+    <select id="getCapsuleByPoolByHotDesc" resultType="com.twt.time_capsule.entity.PublicCapsule">
+        select * from public_capsule where pool_id = #{poolId} order by like_number desc
+    </select>
+    <select id="getCapsuleByPoolByTimeAsc" resultType="com.twt.time_capsule.entity.PublicCapsule">
+        select * from public_capsule where pool_id = #{poolId} order by created_at
+    </select>
+    <select id="getCapsuleByPoolByTimeDesc" resultType="com.twt.time_capsule.entity.PublicCapsule">
+        select * from public_capsule where pool_id = #{poolId} order by created_at desc
+    </select>
 </mapper>

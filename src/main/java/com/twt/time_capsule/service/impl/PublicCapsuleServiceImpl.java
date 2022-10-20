@@ -1,6 +1,8 @@
 package com.twt.time_capsule.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.twt.time_capsule.entity.*;
 import com.twt.time_capsule.mapper.*;
 import com.twt.time_capsule.service.CapsulePoolService;
@@ -174,13 +176,12 @@ public class PublicCapsuleServiceImpl implements PublicCapsuleService {
      */
     @Override
     public APIResponse getList(String poolId,int pageNum,int pageSize,String order,String type) {
-        //超管可以看
-        if(StpUtil.hasRole("admin")){
-            return getListInner(poolId,pageNum,pageSize,order,type);
-        }
         CapsulePool capsulePool = poolMapper.selectById(poolId);
         //活动进行中可以看
         if(capsulePool.getState()==POOL_STATE_OPEN){
+            return getListInner(poolId,pageNum,pageSize,order,type);
+        }
+        else if(StpUtil.hasRole("admin")){
             return getListInner(poolId,pageNum,pageSize,order,type);
         }
         else{
@@ -200,13 +201,30 @@ public class PublicCapsuleServiceImpl implements PublicCapsuleService {
      * getList的内部方法
      * @param poolId
      * @param pageNum
-     * @param PageSize
-     * @param order
-     * @param type
+     * @param pageSize
+     * @param order 1正序 0倒序
+     * @param type hot热度 time时间
      * @return
      */
-    private APIResponse getListInner(String poolId,int pageNum,int PageSize,String order,String type){
-        // TODO: 2022/10/19 处理查询参数 
-        return null;
+    private APIResponse getListInner(String poolId,int pageNum,int pageSize,String order,String type){
+        // TODO: 2022/10/19 处理查询参数
+        Page page = new Page(pageNum,pageSize);
+        IPage<PublicCapsule> capsules;
+        if(order.equals("1")&&type.equals("hot")){
+            capsules = capsuleMapper.getCapsuleByPoolByHotAsc(page,poolId);
+        }
+        else if(order.equals("0")&&type.equals("hot")){
+            capsules = capsuleMapper.getCapsuleByPoolByHotDesc(page,poolId);
+        }
+        else if(order.equals("1")&&type.equals("time")){
+            capsules = capsuleMapper.getCapsuleByPoolByTimeAsc(page,poolId);
+        }
+        else if(order.equals("0")&&type.equals("time")){
+            capsules = capsuleMapper.getCapsuleByPoolByTimeDesc(page,poolId);
+        }
+        else{
+            return APIResponse.error(ErrorCode.PARAM_ERROR);
+        }
+            return APIResponse.success(capsules.getRecords());
     }
 }

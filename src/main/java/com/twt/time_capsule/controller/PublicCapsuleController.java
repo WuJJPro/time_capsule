@@ -1,6 +1,7 @@
 package com.twt.time_capsule.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaIgnore;
 import com.alibaba.fastjson.JSONObject;
 import com.twt.time_capsule.entity.PublicCapsule;
 import com.twt.time_capsule.service.PublicCapsuleService;
@@ -80,11 +81,16 @@ public class PublicCapsuleController {
     }
 
     /**
-     * 获取某一个胶囊池的胶囊
+     * 获取胶囊池下的胶囊
      * @param poolId
+     * @param pageNum
+     * @param pageSize
+     * @param order 1正序 0倒序
+     * @param type hot热度 time时间
      * @return
      */
 //    TODO: 2022/10/16 按时间，按热度 升序降序，分页数  鉴权 参加过活动 活动结束 超管
+    @SaIgnore
     @GetMapping("list")
     public APIResponse getList(String poolId,int pageNum,int pageSize,String order,String type){
         return publicCapsuleService.getList(poolId,pageNum,pageSize,order,type);
