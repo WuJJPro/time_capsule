@@ -13,6 +13,8 @@ import java.util.List;
 
 @Service
 public class NoticeServiceImpl implements NoticeService {
+    private final int NOTICE_STATE_UNREAD = 1;
+    private final int NOTICE_STATE_READ = 0;
     @Autowired
     NoticeMapper noticeMapper;
     @Override
@@ -21,7 +23,8 @@ public class NoticeServiceImpl implements NoticeService {
         if(notice==null){
             return APIResponse.error(ErrorCode.NOTICE_ALREADY_READ);
         }
-        noticeMapper.deleteById(id);
+        notice.setRead(NOTICE_STATE_READ);
+        noticeMapper.updateById(notice);
         return APIResponse.success();
     }
 

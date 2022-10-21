@@ -23,6 +23,8 @@ public class TimeTask {
     private final int STATE_OPENED = 2;
     private final int STATE_OPENED_FAILED = 3;
     private final String NOTICE_TYPE_OPEN = "open";
+    private final int NOTICE_STATE_UNREAD = 1;
+    private final int NOTICE_STATE_READ = 0;
     @Autowired
     PrivateCapsuleMapper capsuleMapper;
     @Autowired
@@ -47,6 +49,7 @@ public class TimeTask {
                 Notice notice = new Notice();
                 notice.setUid(capsule.getUid());
                 notice.setType(NOTICE_TYPE_OPEN);
+                notice.setRead(NOTICE_STATE_UNREAD);
                 noticeMapper.insert(notice);
             } catch (Exception e) {
                 e.printStackTrace();

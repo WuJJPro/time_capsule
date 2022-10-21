@@ -12,7 +12,5 @@ public class Notice {
   private String content;
   private String type;
   private Date createdAt;
-
-
-
+  private Integer read;
 }
