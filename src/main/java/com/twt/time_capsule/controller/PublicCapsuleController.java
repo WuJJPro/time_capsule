@@ -89,7 +89,6 @@ public class PublicCapsuleController {
      * @param type hot热度 time时间
      * @return
      */
-//    TODO: 2022/10/16 按时间，按热度 升序降序，分页数  鉴权 参加过活动 活动结束 超管
     @SaIgnore
     @GetMapping("list")
     public APIResponse getList(String poolId,int pageNum,int pageSize,String order,String type){

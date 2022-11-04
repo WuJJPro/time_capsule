@@ -2,8 +2,10 @@ package com.twt.time_capsule.utils;
 
 import com.twt.time_capsule.entity.Notice;
 import com.twt.time_capsule.entity.PrivateCapsule;
+import com.twt.time_capsule.entity.User;
 import com.twt.time_capsule.mapper.NoticeMapper;
 import com.twt.time_capsule.mapper.PrivateCapsuleMapper;
+import com.twt.time_capsule.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -29,6 +31,10 @@ public class TimeTask {
     PrivateCapsuleMapper capsuleMapper;
     @Autowired
     NoticeMapper noticeMapper;
+    @Autowired
+    ThreadUtil threadUtil;
+    @Autowired
+    UserMapper userMapper;
     /**
      * 本任务每天进行一次,进行私有胶囊的到期发送
      * 三件事：1.发送邮件 2.更改发送状态 3.推送通知
@@ -61,7 +67,20 @@ public class TimeTask {
 
 
     private void sendMail(PrivateCapsule capsule) throws Exception{
-        String template = "这里是发送模板模板";
-        // TODO: 2022/10/16 发送，找产品要模板，或者是写在mysql里面
+        //获取邮箱
+        User user = userMapper.getUserByUid(capsule.getUid());
+        String email = user.getEmail();
+        //获取时间差
+        Date createDate = capsule.getCreatedAt();
+        Date openData = capsule.getOpenTime();
+        int days = differentDaysByMillisecond(openData,createDate);
+        String theme = "叮~你有一个时间胶囊待打开哦~";
+        String template = days+"天前，你留下了这个胶囊。里面装着的或许是当初定下的一个小目标，或许是在某个特殊日子留下的一段话，或许是一句想说却没敢说出口的话……当某个时刻成了回忆，那它便有了专属的意义。现在就去打开这段回忆吧！";
+        threadUtil.sendSimpleMail(email,theme, template);
+    }
+
+
+    private int differentDaysByMillisecond(Date date1, Date date2) {
+        return Math.abs((int) ((date2.getTime() - date1.getTime()) / (1000 * 3600 * 24)));
     }
 }

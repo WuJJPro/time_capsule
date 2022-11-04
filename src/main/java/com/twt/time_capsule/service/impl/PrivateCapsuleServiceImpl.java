@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.awt.geom.QuadCurve2D;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PrivateCapsuleServiceImpl implements PrivateCapsuleService {
@@ -63,6 +64,7 @@ public class PrivateCapsuleServiceImpl implements PrivateCapsuleService {
             jsonObject.remove("uid");
             jsonArray.add(jsonObject);
         }
+
         return APIResponse.success(jsonArray);
     }
 

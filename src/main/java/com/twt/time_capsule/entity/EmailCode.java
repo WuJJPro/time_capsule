@@ -1,6 +1,7 @@
 package com.twt.time_capsule.entity;
 
 
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 
 import java.util.Date;

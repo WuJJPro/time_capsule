@@ -207,7 +207,6 @@ public class PublicCapsuleServiceImpl implements PublicCapsuleService {
      * @return
      */
     private APIResponse getListInner(String poolId,int pageNum,int pageSize,String order,String type){
-        // TODO: 2022/10/19 处理查询参数
         Page page = new Page(pageNum,pageSize);
         IPage<PublicCapsule> capsules;
         if(order.equals("1")&&type.equals("hot")){

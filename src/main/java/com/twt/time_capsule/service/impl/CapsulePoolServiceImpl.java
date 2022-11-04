@@ -1,6 +1,8 @@
 package com.twt.time_capsule.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.twt.time_capsule.VO.CapsulePoolVo;
 import com.twt.time_capsule.entity.CapsulePool;
 import com.twt.time_capsule.entity.PrivateCapsule;
 import com.twt.time_capsule.entity.PublicCapsule;
@@ -9,10 +11,12 @@ import com.twt.time_capsule.mapper.PublicCapsuleMapper;
 import com.twt.time_capsule.service.CapsulePoolService;
 import com.twt.time_capsule.utils.APIResponse;
 import com.twt.time_capsule.utils.ErrorCode;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CapsulePoolServiceImpl implements CapsulePoolService {
@@ -75,6 +79,7 @@ public class CapsulePoolServiceImpl implements CapsulePoolService {
 
     @Override
     public APIResponse getList(String type) {
+        String uid = StpUtil.getLoginIdAsString();
         List<CapsulePool> capsulePools;
         if(type.equals("all")){
             capsulePools = capsulePoolMapper.selectList(null);
@@ -88,8 +93,17 @@ public class CapsulePoolServiceImpl implements CapsulePoolService {
         else{
             return APIResponse.error(ErrorCode.PARAM_ERROR);
         }
+        //不知道这个流写的对不对，是第一次写
+        List<CapsulePoolVo> capsulePoolVos = capsulePools.stream().map(item->{
+            CapsulePoolVo capsulePoolVo = new CapsulePoolVo();
+            BeanUtils.copyProperties(item,capsulePoolVo);
+            PublicCapsule capsule = capsuleMapper.getCapsule(uid,item.getId());
+            //检查是否参加过这个池子
+            capsulePoolVo.setParticipated(capsule==null?POOL_STATE_OPEN:POOL_STATE_CLOSE);
+            return capsulePoolVo;
+        }).collect(Collectors.toList());
 
-        return APIResponse.success(capsulePools);
+        return APIResponse.success(capsulePoolVos);
     }
 
     @Override
