@@ -1,4 +1,4 @@
-package com.twt.time_capsule.utils;
+package com.twt.time_capsule.schedule;
 
 import com.twt.time_capsule.entity.Notice;
 import com.twt.time_capsule.entity.PrivateCapsule;
@@ -6,6 +6,7 @@ import com.twt.time_capsule.entity.User;
 import com.twt.time_capsule.mapper.NoticeMapper;
 import com.twt.time_capsule.mapper.PrivateCapsuleMapper;
 import com.twt.time_capsule.mapper.UserMapper;
+import com.twt.time_capsule.utils.ThreadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -74,6 +75,7 @@ public class TimeTask {
         Date createDate = capsule.getCreatedAt();
         Date openData = capsule.getOpenTime();
         int days = differentDaysByMillisecond(openData,createDate);
+        // TODO: 2022/11/5 密钥和链接 换邮箱 
         String theme = "叮~你有一个时间胶囊待打开哦~";
         String template = days+"天前，你留下了这个胶囊。里面装着的或许是当初定下的一个小目标，或许是在某个特殊日子留下的一段话，或许是一句想说却没敢说出口的话……当某个时刻成了回忆，那它便有了专属的意义。现在就去打开这段回忆吧！";
         threadUtil.sendSimpleMail(email,theme, template);

@@ -7,4 +7,5 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface ReportMapper extends BaseMapper<Report> {
     Report getReport(@Param("uid") String uid,@Param("key") String key);
+
 }

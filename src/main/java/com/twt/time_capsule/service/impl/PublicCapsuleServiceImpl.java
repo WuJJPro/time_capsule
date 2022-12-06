@@ -58,23 +58,23 @@ public class PublicCapsuleServiceImpl implements PublicCapsuleService {
 
     @Override
     public APIResponse alterPublicCapsule(PublicCapsule capsule) {
-        PublicCapsule ori_capsule = capsuleMapper.selectById(capsule.getId());
+        PublicCapsule oriCapsule = capsuleMapper.selectById(capsule.getId());
         boolean flag = false;
         if(capsule.getContent()!=null){
             if(capsule.getContent().length()>200){
                 return APIResponse.error(ErrorCode.WORDS_MAX);
             }
-            ori_capsule.setContent(capsule.getContent());
+            oriCapsule.setContent(capsule.getContent());
             flag = true;
         }
         if(capsule.getMood()!=null){
-            ori_capsule.setMood(capsule.getMood());
+            oriCapsule.setMood(capsule.getMood());
             flag = true;
         }
         if(flag){
             Date now = new Date();
-            ori_capsule.setCreatedAt(now);
-            capsuleMapper.updateById(ori_capsule);
+            oriCapsule.setCreatedAt(now);
+            capsuleMapper.updateById(oriCapsule);
             return APIResponse.success();
         }
         return APIResponse.error(ErrorCode.PARAM_ERROR);
@@ -84,7 +84,10 @@ public class PublicCapsuleServiceImpl implements PublicCapsuleService {
     public APIResponse deletePublicCapsule(String key) {
         String uid = StpUtil.getLoginIdAsString();
         PublicCapsule capsule = capsuleMapper.selectById(key);
-        if(!capsule.getUid().equals(uid)){
+        if(capsule==null){
+            return APIResponse.error(ErrorCode.LOVE_EXIST);
+        }
+        if(!(capsule.getUid().equals(uid))&&!(StpUtil.hasRole("admin"))){
             return APIResponse.error(ErrorCode.OTHER_USER_CAPSULE);
         }
         capsuleMapper.deleteById(key);
